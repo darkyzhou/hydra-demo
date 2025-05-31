@@ -11,8 +11,8 @@
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
     in
     {
-      packages.x86_64-linux.btop = nixpkgs.legacyPackages.x86_64-linux.btop;
-      defaultPackage.x86_64-linux = self.packages.x86_64-linux.btop;
+      packages.x86_64-linux.gost = nixpkgs.legacyPackages.x86_64-linux.gost;
+      defaultPackage.x86_64-linux = self.packages.x86_64-linux.gost;
       hydraJobs."test" = self.defaultPackage;
     };
 }

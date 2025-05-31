@@ -7,12 +7,16 @@
 
   outputs =
     { self, nixpkgs }:
-    let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in
     {
-      packages.x86_64-linux.gost = nixpkgs.legacyPackages.x86_64-linux.gost;
-      defaultPackage.x86_64-linux = self.packages.x86_64-linux.gost;
+      defaultPackage.x86_64-linux =
+        with import nixpkgs { system = "x86_64-linux"; };
+        stdenv.mkDerivation {
+          name = "my-hello";
+          version = "1.0.0";
+          src = self;
+          buildPhase = "gcc -o hello ./hello.c";
+          installPhase = "mkdir -p $out/bin; install -t $out/bin hello";
+        };
       hydraJobs."test" = self.defaultPackage;
     };
 }

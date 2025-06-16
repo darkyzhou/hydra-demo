@@ -2,21 +2,21 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:loongson-community/nixpkgs/loong-master";
   };
 
   outputs =
     { self, nixpkgs }:
     {
-      defaultPackage.x86_64-linux =
-        with import nixpkgs { system = "x86_64-linux"; };
+      defaultPackage.loongarch64-linux =
+        with import nixpkgs { system = "loongarch64-linux"; };
         stdenv.mkDerivation {
-          name = "my-hello";
-          version = "1.0.15";
+          name = "darkyzhou-hello-world";
+          version = "1.0.0";
           src = self;
           buildPhase = "gcc -o hello ./hello.c";
           installPhase = "mkdir -p $out/bin; install -t $out/bin hello";
         };
-      hydraJobs."test" = self.defaultPackage;
+      hydraJobs."darkyzhou-hello-world" = self.defaultPackage;
     };
 }

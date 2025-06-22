@@ -12,7 +12,7 @@
         with import nixpkgs { system = "loongarch64-linux"; };
         stdenv.mkDerivation {
           name = "darkyzhou-hello-world";
-          version = "1.1.0";
+          version = "1.1.1";
           src = self;
           buildPhase = "gcc -o hello ./hello.c";
           installPhase = "mkdir -p $out/bin; install -t $out/bin hello";

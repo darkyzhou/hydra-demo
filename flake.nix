@@ -7,16 +7,31 @@
 
   outputs =
     { self, nixpkgs }:
+    let
+      pkgs = import nixpkgs { system = "loongarch64-linux"; };
+    in
     {
       defaultPackage.loongarch64-linux =
-        with import nixpkgs { system = "loongarch64-linux"; };
+        with pkgs;
         stdenv.mkDerivation {
           name = "darkyzhou-hello-world";
-          version = "1.1.1";
+          version = "1.1.2";
           src = self;
           buildPhase = "gcc -o hello ./hello.c";
           installPhase = "mkdir -p $out/bin; install -t $out/bin hello";
         };
-      hydraJobs."darkyzhou-hello-world" = self.defaultPackage;
+
+      hydraJobs = {
+        runCommandHook = {
+          recurseForDerivations = true;
+          example = pkgs.writeScript "run-me" ''
+            #!${pkgs.runtimeShell}
+            ${pkgs.jq}/bin/jq . "$HYDRA_JSON"
+
+            echo "HYDRA_JSON:"
+            cat "$HYDRA_JSON"
+          '';
+        };
+      };
     };
 }

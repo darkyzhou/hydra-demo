@@ -22,14 +22,15 @@
         };
 
       hydraJobs = {
+        hello = self.defaultPackage.loongarch64-linux;
+
         runCommandHook = {
           recurseForDerivations = true;
           example = pkgs.writeScript "run-me" ''
             #!${pkgs.runtimeShell}
             ${pkgs.jq}/bin/jq . "$HYDRA_JSON"
 
-            echo "HYDRA_JSON:"
-            cat "$HYDRA_JSON"
+            ls ${self.defaultPackage.loongarch64-linux}
           '';
         };
       };
